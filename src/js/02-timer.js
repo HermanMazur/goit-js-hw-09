@@ -25,12 +25,24 @@ const options = {
         if (inputDates >= Date.now()) {
             startBtn.removeAttribute('disabled');
         } else {
-            Notiflix.Notify.failure('Please choose a date in the future');
+            Notify.failure('Please choose a date in the future');
         }
   },
 };
 
+flatpickr('#datetime-picker', options);
 
+function onClickStartButton() {
+    startBtn.setAttribute('disabled', true);
+    const timerId = setInterval(() => {
+        const deltaTime = inputDates - Date.now();
+        const { days, hours, minutes, seconds } = convertMs(deltaTime);
+        daysTimer.textContent = days;
+        hoursTimer.textContent = hours;
+        minutesTimer.textContent = minutes;
+        secondsTimer.textContent = seconds;
+    })
+}
 
 function convertMs(ms) {
   // Number of milliseconds per unit of time
